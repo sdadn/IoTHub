@@ -1,0 +1,1 @@
+C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\HubApp.csproj;x86

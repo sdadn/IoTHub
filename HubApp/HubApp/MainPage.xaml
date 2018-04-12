@@ -8,6 +8,7 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="btn_scanWifi" Content="Scan Wifi" HorizontalAlignment="Left" Margin="375,330,0,0" VerticalAlignment="Top" Height="91" Width="166" Click="btn_scanWifi_Click" />
 
     </Grid>
 </Page>
