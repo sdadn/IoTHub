@@ -56,7 +56,38 @@ namespace HubApp
 
             await new MessageDialog("adapter set").ShowAsync();
 
-            w_adapter = await WiFiAdapter.FromIdAsync(adapterResults[0].Id);        
+            w_adapter = await WiFiAdapter.FromIdAsync(adapterResults[0].Id);
+
+            await w_adapter.ScanAsync();
+
+            StringBuilder s = new StringBuilder();
+            var networks = w_adapter.NetworkReport;
+            WiFiAvailableNetwork jayhawk = null;
+
+            foreach (var net in networks.AvailableNetworks )
+            {
+                s.Append(net.Ssid);
+
+                s.AppendLine();
+
+                if (net.Ssid == "JAYHAWK")
+                    jayhawk = net;
+            }
+            if (jayhawk == null)
+                return;
+
+            MessageDialog m = new MessageDialog(s.ToString());
+            await m.ShowAsync();
+
+            var credential = new PasswordCredential();
+
+            credential.UserName = "m743a983";
+            credential.Password = "ethanolC2H5";
+
+            var x = await w_adapter.ConnectAsync(jayhawk, WiFiReconnectionKind.Automatic, credential);
+
+            if(x.ConnectionStatus == WiFiConnectionStatus.Success)
+                await new MessageDialog("success").ShowAsync();
 
         }
 
@@ -68,19 +99,19 @@ namespace HubApp
 
             StringBuilder s = new StringBuilder();
             var networks = w_adapter.NetworkReport;
-            WiFiAvailableNetwork jayhawk = null;    
-            
+            WiFiAvailableNetwork jayhawk = null;
+
             foreach (var net in networks.AvailableNetworks )
             {
                 s.Append(net.Ssid);
-             
+
                 s.AppendLine();
 
                 if (net.Ssid == "JAYHAWK")
                     jayhawk = net;
             }
             if (jayhawk == null)
-                return; 
+                return;
 
             MessageDialog m = new MessageDialog(s.ToString());
             await m.ShowAsync();
