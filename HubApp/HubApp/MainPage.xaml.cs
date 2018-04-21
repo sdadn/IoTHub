@@ -54,9 +54,9 @@ namespace HubApp
                 return;
             }
 
-            
 
-            await new MessageDialog("adapter set").ShowAsync();git config
+
+            await new MessageDialog("adapter set").ShowAsync();
 
             w_adapter = await WiFiAdapter.FromIdAsync(adapterResults[0].Id);
 
