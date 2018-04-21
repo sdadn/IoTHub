@@ -54,7 +54,9 @@ namespace HubApp
                 return;
             }
 
-            await new MessageDialog("adapter set").ShowAsync();
+            
+
+            await new MessageDialog("adapter set").ShowAsync();git config
 
             w_adapter = await WiFiAdapter.FromIdAsync(adapterResults[0].Id);
 
@@ -93,7 +95,6 @@ namespace HubApp
 
         private async void btn_scanWifi_Click(object sender, RoutedEventArgs e)
         {
-            //await new MessageDialog(w_adapter.NetworkAdapter.NetworkAdapterId.ToString()).ShowAsync();
 
             await w_adapter.ScanAsync();
 
