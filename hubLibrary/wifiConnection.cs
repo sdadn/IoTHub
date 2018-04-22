@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Enumeration;
 using Windows.Devices.WiFi;
+using Windows.Security.Credentials;
 using Windows.UI.Popups;
 
 namespace HubApp
@@ -21,7 +23,7 @@ namespace HubApp
             get { return this.adapter_access; }
         }
 
-        public bool adapter_available
+        public bool adapterIsAvailable
         {
             get { return this.adapter_available; }
         }
