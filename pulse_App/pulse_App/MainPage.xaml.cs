@@ -22,9 +22,18 @@ namespace pulse_App
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        wifiConnection wifi = new wifiConnection();
+
         public MainPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            wifi.test_access();
+            wifi.getadapters();
+            wifi.networks_scan("SSM");
         }
     }
 }
