@@ -50,6 +50,7 @@ namespace HubApp
             var networks = w_adapter.NetworkReport;
             WiFiAvailableNetwork jayhawk = null;
 
+
             foreach (var net in networks.AvailableNetworks )
             {
                 s.Append(net.Ssid);
