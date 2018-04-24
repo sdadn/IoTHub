@@ -8,7 +8,7 @@ using Windows.Devices.WiFi;
 using Windows.Security.Credentials;
 using Windows.UI.Popups;
 
-namespace HubApp
+namespace HubLibrary
 {
     class wifiConnection
     {
@@ -48,8 +48,8 @@ namespace HubApp
 
             adapter_access = true;
         }
-
-        public async void get_adapters()
+        
+        public async Task<int> Get_adapters()
         {
             adapter_available = false;
 
@@ -59,17 +59,17 @@ namespace HubApp
             {
                 MessageDialog msg = new MessageDialog("No adapters found.");
                 await msg.ShowAsync();
-                return;
+                return 0;
             }
 
             this.adptr = await WiFiAdapter.FromIdAsync(adapterResults[0].Id);
             adapter_available = true;
 
             await new MessageDialog("adapter set").ShowAsync();
-
+            return 1;
         }
 
-        public async void networks_scan(string net_ssid)
+        public async Task<int> networks_scan(string net_ssid)
         {
             await this.adptr.ScanAsync();
 
@@ -79,7 +79,7 @@ namespace HubApp
 
             // WiFiAvailableNetwork target_net = null;
 
-            foreach (var net in networks.AvailableNetworks )
+            foreach (var net in networks.AvailableNetworks)
             {
                 s.Append(net.Ssid);
 
@@ -89,10 +89,12 @@ namespace HubApp
                     target_net = net;
             }
             if (target_net == null)
-                return;
+                return 0;
 
             MessageDialog m = new MessageDialog(s.ToString());
             await m.ShowAsync();
+
+            return 1;
         }
 
         public async void connectToNetwork()

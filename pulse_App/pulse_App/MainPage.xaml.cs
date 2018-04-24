@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HubLibrary;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace pulse_App
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             wifi.test_access();
-            wifi.getadapters();
+            wifi.Get_adapters();
             wifi.networks_scan("SSM");
         }
     }

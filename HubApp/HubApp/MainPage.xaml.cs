@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Enumeration;
 using System.Text;
 using Windows.Security.Credentials;
+using HubLibrary;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -38,43 +39,13 @@ namespace HubApp
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             wifi.test_access();
-            wifi.getadapters();
-            wifi.networks_scan("SSM");
+            await wifi.Get_adapters();
+            await wifi.networks_scan("SSM");
         }
 
         private async void btn_scanWifi_Click(object sender, RoutedEventArgs e)
         {
-            await w_adapter.ScanAsync();
-
-            StringBuilder s = new StringBuilder();
-            var networks = w_adapter.NetworkReport;
-            WiFiAvailableNetwork jayhawk = null;
-
-
-            foreach (var net in networks.AvailableNetworks )
-            {
-                s.Append(net.Ssid);
-
-                s.AppendLine();
-
-                if (net.Ssid == "JAYHAWK")
-                    jayhawk = net;
-            }
-            if (jayhawk == null)
-                return;
-
-            MessageDialog m = new MessageDialog(s.ToString());
-            await m.ShowAsync();
-
-            var credential = new PasswordCredential();
-
-            credential.UserName = "m743a983";
-            credential.Password = "ethanolC2H5";
-
-            var x = await w_adapter.ConnectAsync(jayhawk, WiFiReconnectionKind.Automatic, credential);
-
-            if(x.ConnectionStatus == WiFiConnectionStatus.Success)
-                await new MessageDialog("success").ShowAsync();
+            await wifi.networks_scan("SSM");
         }
     }
 }
