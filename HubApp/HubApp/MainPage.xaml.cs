@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Devices.Gpio;
 
 using Windows.Devices.WiFi;
 using Windows.UI.Popups;
@@ -36,16 +37,17 @@ namespace HubApp
         {
             this.InitializeComponent();
         }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            wifi.test_access();
-            await wifi.Get_adapters();
-            await wifi.networks_scan("SSM");
+            // wifi.test_access();
+            // await wifi.Get_adapters();
+            // await wifi.networks_scan("SSM");
         }
 
         private async void btn_scanWifi_Click(object sender, RoutedEventArgs e)
         {
-            await wifi.networks_scan("SSM");
+            // await wifi.networks_scan("SSM");
         }
     }
 }

@@ -32,7 +32,6 @@ namespace HubLibrary
             get {return this.adptr; }
         }
 
-
         public async void test_access()
         {
             adapter_access = false;
