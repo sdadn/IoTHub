@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.Http;
 using Windows.ApplicationModel.Background;
+using Windows.Networking.Sockets;
+using Windows.System.Threading;
+using Windows.Storage.Streams;
 
 // The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
@@ -11,7 +14,7 @@ namespace HubServer
 {
     public sealed class StartupTask : IBackgroundTask
     {
-        private readonly int _port;
+        private  int _port;
         public int Port { get { return _port; } }
 
         private StreamSocketListener listener;
@@ -32,17 +35,19 @@ namespace HubServer
             // from closing prematurely by using BackgroundTaskDeferral as
             // described in http://aka.ms/backgroundtaskdeferral
             //
+
+                _port = 9000;
                 taskInstance.GetDeferral();
-                var socket = new SocketServer(9000);
+                //var socket = new SocketServer(9000);
                 ThreadPool.RunAsync(x => {
-                                    socket.Star();
-                                    socket.OnError += socket_OnError;
-                                    socket.OnDataRecived += Socket_OnDataRecived;
+                                    Start();
+                                    OnError += socket_OnError;
+                                    OnDataRecived += Socket_OnDataRecived;
                                     });
         }
 
 
-        public async void Star()
+        public async void Start()
         {
             listener = new StreamSocketListener();
             listener.ConnectionReceived += Listener_ConnectionReceived;
