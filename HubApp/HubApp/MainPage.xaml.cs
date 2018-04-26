@@ -43,6 +43,9 @@ namespace HubApp
             // wifi.test_access();
             // await wifi.Get_adapters();
             // await wifi.networks_scan("SSM");
+            string gateway = NetworkHelper.GetDockerNAT();
+            var server = new SimpleServer((s) => { lock (traceLock) { Debug.Write(s); } }, (s) => { lock (traceLock) { Debug.WriteLine(s); } });
+            server.Start($"http://{gateway}:22122/wsDemo/");
         }
 
         private async void btn_scanWifi_Click(object sender, RoutedEventArgs e)
