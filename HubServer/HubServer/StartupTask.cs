@@ -7,6 +7,8 @@ using Windows.ApplicationModel.Background;
 using Windows.Networking.Sockets;
 using Windows.System.Threading;
 using Windows.Storage.Streams;
+using System.Net.Sockets;
+using System.Net;
 
 // The Background Application template is documented at http://go.microsoft.com/fwlink/?LinkID=533884&clcid=0x409
 
@@ -36,14 +38,16 @@ namespace HubServer
             // described in http://aka.ms/backgroundtaskdeferral
             //
 
-                _port = 9000;
-                taskInstance.GetDeferral();
-                //var socket = new SocketServer(9000);
-                ThreadPool.RunAsync(x => {
-                                    Start();
-                                    OnError += socket_OnError;
-                                    OnDataRecived += Socket_OnDataRecived;
-                                    });
+            //_port = 9000;
+            //taskInstance.GetDeferral();
+            ////var socket = new SocketServer(9000);
+            //ThreadPool.RunAsync(x => {
+            //                    Start();
+            //                    OnError += socket_OnError;
+            //                    OnDataRecived += Socket_OnDataRecived;
+            //                    });
+
+            TcpListener s = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
         }
 
 
