@@ -8,8 +8,12 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:ConnectionId='1' x:Name="btn_scanWifi" Content="Scan Wifi" HorizontalAlignment="Left" Margin="375,330,0,0" VerticalAlignment="Top" Height="91" Width="166"                            />
-
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+             <Button x:ConnectionId='1' x:Name="btn_scanWifi" Content="Scan Wifi" HorizontalAlignment="Left" Margin="375,330,0,0" VerticalAlignment="Top" Height="91" Width="166"                            />
+            <Ellipse x:ConnectionId='2' x:Name="LED" Fill="LightGray" Stroke="White" Width="100" Height="100" Margin="10"/>
+            <TextBlock x:ConnectionId='3' x:Name="DelayText" Text="500ms" Margin="10" TextAlignment="Center" FontSize="26.667" />
+            <TextBlock x:ConnectionId='4' x:Name="GpioStatus" Text="Waiting to initialize GPIO..." Margin="10,50,10,10" TextAlignment="Center" FontSize="26.667" />
+        </StackPanel>
     </Grid>
 </Page>
 
