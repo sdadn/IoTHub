@@ -11,6 +11,18 @@ namespace HubServer
 {
     public sealed class StartupTask : IBackgroundTask
     {
+        private readonly int _port;
+        public int Port { get { return _port; } }
+
+        private StreamSocketListener listener;
+
+        public delegate void DataRecived(string data);
+        public event DataRecived OnDataRecived;
+
+
+        public delegate void Error(string message);
+        public event Error OnError;
+
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             // 
@@ -20,9 +32,50 @@ namespace HubServer
             // from closing prematurely by using BackgroundTaskDeferral as
             // described in http://aka.ms/backgroundtaskdeferral
             //
-            string gateway = NetworkHelper.GetDockerNAT();
-            var server = new SimpleServer((s) => { lock (traceLock) { Debug.Write(s); } }, (s) => { lock (traceLock) { Debug.WriteLine(s); } });
-            server.Start($"http://{gateway}:22122/wsDemo/");
+                taskInstance.GetDeferral();
+                var socket = new SocketServer(9000);
+                ThreadPool.RunAsync(x => {
+                                    socket.Star();
+                                    socket.OnError += socket_OnError;
+                                    socket.OnDataRecived += Socket_OnDataRecived;
+                                    });
         }
+
+
+        public async void Star()
+        {
+            listener = new StreamSocketListener();
+            listener.ConnectionReceived += Listener_ConnectionReceived;
+            await listener.BindServiceNameAsync(Port.ToString());
+        }
+
+        private async void Listener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            var reader = new DataReader(args.Socket.InputStream);
+            try
+            {
+                while (true)
+                {
+                    uint sizeFieldCount = await reader.LoadAsync(sizeof(uint));
+                    //if disconnected 
+                    if (sizeFieldCount != sizeof(uint)) 
+                        return;
+                    uint stringLenght = reader.ReadUInt32(); 
+                    uint actualStringLength = await reader.LoadAsync(stringLenght); 
+                    //if disconnected 
+                    if (stringLenght != actualStringLength) 
+                        return; 
+                    if (OnDataRecived != null) 
+                        OnDataRecived(reader.ReadString(actualStringLength));
+                    } 
+            } 
+            catch (Exception ex)
+            { 
+                if (OnError != null) 
+                    OnError(ex.Message);
+            }
+        }
+
+
     }
 }
