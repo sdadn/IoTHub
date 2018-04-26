@@ -25,6 +25,7 @@ using System.Text;
 using Windows.Security.Credentials;
 using HubLibrary;
 using Windows.Networking.Sockets;
+using Windows.Networking;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -37,7 +38,7 @@ namespace HubApp
     {
         wifiConnection wifi = new wifiConnection();
         // WiFiAdapter w_adapter;
-
+        StreamSocketClass SocketManager = new StreamSocketClass();
         static string PortNumber = "4040";
 
         public MainPage()

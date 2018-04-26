@@ -19,7 +19,7 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\AppX</LayoutDir>
-    <RegisteredManifestChecksum>880247DD52C8D059B2699934355D5008EC3CFDB4EEEDB290BA2136C19F034FF7</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>86BDE167DB576741503525AFF993DB80FA260972B488A2F616DFFC7A728060C5</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>d18e8d53-cc59-4bdf-93aa-7072b2b2bde4_1.0.0.0_arm__gxsysph1g85bp</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>d18e8d53-cc59-4bdf-93aa-7072b2b2bde4_gxsysph1g85bp!App</RegisteredUserModeAppID>
     <RegisteredPackageID>d18e8d53-cc59-4bdf-93aa-7072b2b2bde4</RegisteredPackageID>
@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-26T02:10:00.605</Modified>
+      <Modified>2018-04-26T04:33:11.982</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\HubApp.exe">
       <PackagePath>entrypoint\HubApp.exe</PackagePath>
-      <Modified>2018-04-26T02:09:57.872</Modified>
+      <Modified>2018-04-26T04:30:20.312</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\NuGetPackages\microsoft.csharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -540,11 +540,11 @@
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-26T02:09:59.690</Modified>
+      <Modified>2018-04-26T04:33:11.743</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\Core\HubApp.exe">
       <PackagePath>HubApp.exe</PackagePath>
-      <Modified>2018-04-26T02:10:00.583</Modified>
+      <Modified>2018-04-26T04:33:11.966</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

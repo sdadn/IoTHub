@@ -10,7 +10,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
  
  
-namespace HubServer
+namespace HubApp
 {
     class StreamSocketClass
     {
