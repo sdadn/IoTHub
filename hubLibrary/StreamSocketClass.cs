@@ -10,7 +10,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
  
  
-namespace HubApp
+namespace HubLibrary
 {
     class StreamSocketClass
     {
@@ -21,7 +21,7 @@ namespace HubApp
  
         private StreamSocket ConnectionSocket;
  
- 
+
         public void DataListener_OpenListenPorts()
         {
             StreamSocketListener DataListener = new StreamSocketListener();
