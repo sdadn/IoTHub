@@ -63,22 +63,7 @@ namespace HubApp
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            // wifi.test_access();
-            // await wifi.Get_adapters();
-            // await wifi.networks_scan("SSM");
-            //string gateway = NetworkHelper.GetDockerNAT();
-            //var server = new SimpleServer((s) => { lock (traceLock) { Debug.Write(s); } }, (s) => { lock (traceLock) { Debug.WriteLine(s); } });
-            //server.Start($"http://{gateway}:22122/wsDemo/");
-            // try
-            // {
-            //     var streamSocektListener = new StreamSocketListener();
-            //     streamSocektListener.ConnectionReceived += this.socket_Listener;
-            //     await streamSocektListener.BindServiceNameAsync(MainPage.PortNumber);
-            //     //streamSocektListener.ConnectionReceived += this.Stream
-            // }
-            // catch(Exception ex)
-            // {
-            // }
+
         }
 
         private async void socket_Listener(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs e)

@@ -25,32 +25,73 @@ namespace WindowsApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        StreamSocketClass SocketManager = new StreamSocketClass();
+        StreamSocketClass SocketManager;
         HostName ServerAdress = new HostName("healthHub");
+
         public MainPage()
         {
             this.InitializeComponent();
+        }
 
-            //StreamSocketClass.IsServer = false;
-            // Declaring HostName of Server
-            
-            // Open Listening ports and start listening.
-            SocketManager.DataListener_OpenListenPorts();
-            // Server
-            //if (StreamSocketClass.IsServer)
-            //{
-            //    Debug.WriteLine("[SERVER] Ready to receive");
-            //}
-            // Client
-            //else
-            //{
-            //SocketManager.SendResponse(ServerAdress, "Hello WindowsInstructed");
-            //}
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            SocketManager = new StreamSocketClass(event_function = this.__connectionReceived);
+            SocketManager.OpenListenPorts();
         }
 
         private void __btn_send_Click(object sender, RoutedEventArgs e)
         {
             SocketManager.SendResponse(new HostName(txt_hostname.Text), txt_msg.Text);
         }
+
+        public async void __connectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            Debug.WriteLine("event fired");
+            DataReader DataListener_Reader;
+            string DataReceived;
+
+            using (DataListener_Reader = new DataReader(args.Socket.InputStream))
+            {
+                StringBuilder builder;
+                builder = new StringBuilder();
+                DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
+                DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+                DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+
+                await DataListener_Reader.LoadAsync(256);
+
+                while (DataListener_Reader.UnconsumedBufferLength > 0)
+                {
+                    builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
+                    await DataListener_Reader.LoadAsync(256);
+                }
+                DataListener_Reader.DetachStream();
+                DataReceived = builder.ToString();
+            }
+ 
+            if(DataReceived != null)
+            {
+                // Server
+                if(IsServer)
+                {
+                    Debug.WriteLine("[SERVER] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+                    // Sending reply
+                    SendResponse(args.Socket.Information.RemoteAddress, "Hello Client!");
+                }
+                // Client
+                else
+                {
+                    Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Received data was empty. Check if you sent data.");
+            }
+
+        }
+
+
+
     }
 }

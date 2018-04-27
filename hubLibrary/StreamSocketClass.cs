@@ -16,46 +16,57 @@ namespace HubLibrary
     {
         public static bool IsServer { get; set; }
         // Change this. True = server, false = client
-        private string ServerPort = "12345";
+        private string ServerPort;
  
         private StreamSocket ConnectionSocket;
 
-        public StreamSocketListener DataListener;
+        StreamSocketListener listener {get;set};
 
-        public StreamSocketClass()
+
+        // public StreamSocketClass(string port = "12345")
+        // {
+        //     this.ServerPort = port;
+
+        //     listener = new StreamSocketListener();
+        //     listener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
+        // }
+
+        public StreamSocketClass(string port = "12345", void event_function = this.StreamSocketListener_ConnectionReceived)
         {
-            DataListener = new StreamSocketListener();
-            //DataListener.Control =
-            DataListener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
+            this.ServerPort = port;
+
+            listener = new StreamSocketListener();
+            listener.ConnectionReceived += event_function;
         }
 
-
-        public async void DataListener_OpenListenPorts()
+        public async void OpenListenPorts()
         {
-            await DataListener.BindServiceNameAsync(ServerPort);
+            await listener.BindServiceNameAsync(ServerPort);
         }
- 
+
         public async void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             Debug.WriteLine("event fired");
             DataReader DataListener_Reader;
-            StringBuilder DataListener_StrBuilder;
             string DataReceived;
- 
+
             using (DataListener_Reader = new DataReader(args.Socket.InputStream))
             {
-                DataListener_StrBuilder = new StringBuilder();
+                StringBuilder builder;
+                builder = new StringBuilder();
                 DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
                 DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
                 DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+
                 await DataListener_Reader.LoadAsync(256);
+
                 while (DataListener_Reader.UnconsumedBufferLength > 0)
                 {
-                    DataListener_StrBuilder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
+                    builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
                     await DataListener_Reader.LoadAsync(256);
                 }
                 DataListener_Reader.DetachStream();
-                DataReceived = DataListener_StrBuilder.ToString();
+                DataReceived = builder.ToString();
             }
  
             if(DataReceived != null)
@@ -79,7 +90,7 @@ namespace HubLibrary
             }
  
         }
- 
+
         public async void SendResponse(HostName Adress, string MessageToSent)
         {
            try
