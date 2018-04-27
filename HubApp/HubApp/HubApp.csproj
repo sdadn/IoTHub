@@ -92,6 +92,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\hubLibrary\StreamSocketClass.cs">
+      <Link>StreamSocketClass.cs</Link>
+    </Compile>
     <Compile Include="..\..\hubLibrary\wifiConnection.cs">
       <Link>wifiConnection.cs</Link>
     </Compile>
@@ -102,7 +105,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StreamSocketClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

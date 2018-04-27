@@ -95,6 +95,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\hubLibrary\socketServer.cs">
+      <Link>socketServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\hubLibrary\StreamSocketClass.cs">
+      <Link>StreamSocketClass.cs</Link>
+    </Compile>
     <Compile Include="StartupTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

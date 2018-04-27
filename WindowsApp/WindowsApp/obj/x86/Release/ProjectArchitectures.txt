@@ -1,0 +1,1 @@
+C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\WindowsApp.csproj;x86

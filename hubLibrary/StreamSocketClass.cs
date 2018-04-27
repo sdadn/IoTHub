@@ -14,23 +14,30 @@ namespace HubLibrary
 {
     class StreamSocketClass
     {
- 
         public static bool IsServer { get; set; }
         // Change this. True = server, false = client
         private string ServerPort = "12345";
  
         private StreamSocket ConnectionSocket;
- 
 
-        public void DataListener_OpenListenPorts()
+        public StreamSocketListener DataListener;
+
+        public StreamSocketClass()
         {
-            StreamSocketListener DataListener = new StreamSocketListener();
-            DataListener.ConnectionReceived += DataListener_ConnectionReceived;
-            DataListener.BindServiceNameAsync(ServerPort).AsTask().Wait();
+            DataListener = new StreamSocketListener();
+            //DataListener.Control =
+            DataListener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
+        }
+
+
+        public async void DataListener_OpenListenPorts()
+        {
+            await DataListener.BindServiceNameAsync(ServerPort);
         }
  
-        private async void DataListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        public async void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
+            Debug.WriteLine("event fired");
             DataReader DataListener_Reader;
             StringBuilder DataListener_StrBuilder;
             string DataReceived;
@@ -58,21 +65,22 @@ namespace HubLibrary
                 {
                     Debug.WriteLine("[SERVER] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
                     // Sending reply
-                    SentResponse(args.Socket.Information.RemoteAddress, "Hello Client!");
+                    SendResponse(args.Socket.Information.RemoteAddress, "Hello Client!");
                 }
                 // Client
                 else
                 {
                     Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
                 }
-            } else
+            }
+            else
             {
                 Debug.WriteLine("Received data was empty. Check if you sent data.");
             }
  
         }
  
-        public async void SentResponse(HostName Adress, string MessageToSent)
+        public async void SendResponse(HostName Adress, string MessageToSent)
         {
            try
             {

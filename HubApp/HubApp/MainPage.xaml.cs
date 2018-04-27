@@ -9,8 +9,6 @@ using Windows.Devices.Gpio;
 using System.Diagnostics;
 using Windows.ApplicationModel.Background;
 
-
-
 using Windows.Devices.WiFi;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -48,7 +46,7 @@ namespace HubApp
             // Declaring IsServer (True = server, False = client)
             StreamSocketClass.IsServer = true;
             // Declaring HostName of Server
-            HostName ServerAdress = new HostName("DESKTOP-A1SAQ5U");
+            HostName ServerAdress = new HostName("healthHub");
             // Open Listening ports and start listening.
             SocketManager.DataListener_OpenListenPorts();
             // Server
@@ -59,7 +57,7 @@ namespace HubApp
             // Client
             else
             {
-                SocketManager.SentResponse(ServerAdress, "Hello WindowsInstructed");
+                SocketManager.SendResponse(ServerAdress, "Hello WindowsInstructed");
             }
         }
 
@@ -74,18 +72,15 @@ namespace HubApp
             // try
             // {
             //     var streamSocektListener = new StreamSocketListener();
-
             //     streamSocektListener.ConnectionReceived += this.socket_Listener;
-
             //     await streamSocektListener.BindServiceNameAsync(MainPage.PortNumber);
-
             //     //streamSocektListener.ConnectionReceived += this.Stream
             // }
             // catch(Exception ex)
             // {
-
             // }
         }
+
         private async void socket_Listener(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs e)
         {
             string req;
@@ -109,5 +104,7 @@ namespace HubApp
         {
             // await wifi.networks_scan("SSM");
         }
+
+
     }
 }
