@@ -47,7 +47,25 @@ namespace HubServer
             //                    OnDataRecived += Socket_OnDataRecived;
             //                    });
 
-            TcpListener s = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
+            // TcpListener s = new TcpListener(IPAddress.Parse("127.0.0.1"), 80);
+
+
+            // Declaring IsServer (True = server, False = client)
+            StreamSocketClass.IsServer = true;
+            // Declaring HostName of Server
+            HostName ServerAdress = new HostName("DESKTOP-A1SAQ5U");
+            // Open Listening ports and start listening.
+            SocketManager.DataListener_OpenListenPorts();
+            // Server
+            if(StreamSocketClass.IsServer)
+            {
+                Debug.WriteLine("[SERVER] Ready to receive");
+            }
+            // Client
+            else
+            {
+                SocketManager.SentResponse(ServerAdress, "Hello WindowsInstructed");
+            }
         }
 
 
