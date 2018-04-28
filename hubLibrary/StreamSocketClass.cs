@@ -20,18 +20,18 @@ namespace HubLibrary
  
         private StreamSocket ConnectionSocket;
 
-        StreamSocketListener listener {get;set};
+        StreamSocketListener listener { get; set; }
 
+        public StreamSocketClass(string port = "12345")
+        {
+            this.ServerPort = port;
 
-        // public StreamSocketClass(string port = "12345")
-        // {
-        //     this.ServerPort = port;
+            listener = new StreamSocketListener();
+            listener.ConnectionReceived += this.__ConnectionReceivedDefault;
+        }
 
-        //     listener = new StreamSocketListener();
-        //     listener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
-        // }
-
-        public StreamSocketClass(string port = "12345", void event_function = this.StreamSocketListener_ConnectionReceived)
+        public StreamSocketClass(Windows.Foundation.TypedEventHandler<StreamSocketListener, StreamSocketListenerConnectionReceivedEventArgs> event_function,
+                                    string port = "12345")
         {
             this.ServerPort = port;
 
@@ -41,12 +41,23 @@ namespace HubLibrary
 
         public async void OpenListenPorts()
         {
-            await listener.BindServiceNameAsync(ServerPort);
+            await listener.BindServiceNameAsync(this.ServerPort);
         }
 
-        public async void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        public void getIP()
         {
-            Debug.WriteLine("event fired");
+
+        }
+
+        public void IP_Scan()
+        {
+
+        }
+
+        public async void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            Debug.WriteLine("Default Event fired");
+
             DataReader DataListener_Reader;
             string DataReceived;
 
@@ -68,50 +79,54 @@ namespace HubLibrary
                 DataListener_Reader.DetachStream();
                 DataReceived = builder.ToString();
             }
+
+            
  
-            if(DataReceived != null)
-            {
-                // Server
-                if(IsServer)
-                {
-                    Debug.WriteLine("[SERVER] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
-                    // Sending reply
-                    SendResponse(args.Socket.Information.RemoteAddress, "Hello Client!");
-                }
-                // Client
-                else
-                {
-                    Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
-                }
-            }
-            else
+            if(DataReceived == null)
             {
                 Debug.WriteLine("Received data was empty. Check if you sent data.");
+                return;
             }
- 
+                // Server
+            if(IsServer)
+            {
+                Debug.WriteLine("[SERVER] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+                // Sending reply
+                SendData(args.Socket.Information.RemoteAddress, "Hello Client!");
+
+                return;
+            }
+            // Client
+            Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
         }
 
-        public async void SendResponse(HostName Adress, string MessageToSent)
+        public async void SendData(HostName address, string DataToSend)
         {
            try
             {
                 // Try connect
                 Debug.WriteLine("Attempting to connect. " + Environment.NewLine);
+
                 ConnectionSocket = new StreamSocket();
+
                 // Wait on connection
-                await ConnectionSocket.ConnectAsync(Adress, ServerPort);
+                await ConnectionSocket.ConnectAsync(address, ServerPort);
+
                 // Create a DataWriter
-                DataWriter SentResponse_Writer = new DataWriter(ConnectionSocket.OutputStream);
-                string content = MessageToSent;
-                byte[] data = Encoding.UTF8.GetBytes(content);
+                DataWriter writer = new DataWriter(ConnectionSocket.OutputStream);
+                byte[] data = Encoding.UTF8.GetBytes(DataToSend);
+
                 // Write the bytes
-                SentResponse_Writer.WriteBytes(data);
+                writer.WriteBytes(data);
+
                 // Store the written data
-                await SentResponse_Writer.StoreAsync();
-                SentResponse_Writer.DetachStream();
+                await writer.StoreAsync();
+                writer.DetachStream();
+
                 // Dispose the data
-                SentResponse_Writer.Dispose();
-                Debug.WriteLine("Connection has been made and your message " + MessageToSent + " has been sent." + Environment.NewLine);
+                writer.Dispose();
+                Debug.WriteLine("Connection has been made and your message " + DataToSend + " has been sent." + Environment.NewLine);
+
                 // Dispose the connection.
                 ConnectionSocket.Dispose();
                 ConnectionSocket = new StreamSocket();

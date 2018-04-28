@@ -24,6 +24,7 @@ using Windows.Security.Credentials;
 using HubLibrary;
 using Windows.Networking.Sockets;
 using Windows.Networking;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -34,35 +35,23 @@ namespace HubApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        static string deviceName = "Hub";
         wifiConnection wifi = new wifiConnection();
         // WiFiAdapter w_adapter;
-        StreamSocketClass SocketManager = new StreamSocketClass();
+        StreamSocketClass SocketManager ;
         static string PortNumber = "4040";
 
         public MainPage()
         {
             this.InitializeComponent();
-
-            // Declaring IsServer (True = server, False = client)
-            StreamSocketClass.IsServer = true;
-            // Declaring HostName of Server
-            HostName ServerAdress = new HostName("healthHub");
-            // Open Listening ports and start listening.
-            SocketManager.DataListener_OpenListenPorts();
-            // Server
-            if(StreamSocketClass.IsServer)
-            {
-                Debug.WriteLine("[SERVER] Ready to receive");
-            }
-            // Client
-            else
-            {
-                SocketManager.SendResponse(ServerAdress, "Hello WindowsInstructed");
-            }
+            SocketManager = new StreamSocketClass();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            SocketManager.OpenListenPorts();
+
+            Debug.WriteLine("["+ deviceName +"] Ready to send & receive");
 
         }
 
@@ -88,6 +77,51 @@ namespace HubApp
         private async void btn_scanWifi_Click(object sender, RoutedEventArgs e)
         {
             // await wifi.networks_scan("SSM");
+        }
+
+
+        public async void __ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        {
+            Debug.WriteLine("[ " + deviceName + " ]: Receive event fired.");
+
+            //DataReader DataListener_Reader;
+            string DataReceived;
+
+            using (DataReader DataListener_Reader = new DataReader(args.Socket.InputStream))
+            {
+                StringBuilder builder;
+                builder = new StringBuilder();
+                DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
+                DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+                DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+
+                await DataListener_Reader.LoadAsync(256);
+
+                while (DataListener_Reader.UnconsumedBufferLength > 0)
+                {
+                    builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
+                    await DataListener_Reader.LoadAsync(256);
+                }
+                DataListener_Reader.DetachStream();
+                DataReceived = builder.ToString();
+            }
+
+
+
+            if (DataReceived == null)
+            {
+                Debug.WriteLine("Received data was empty. Check if you sent data.");
+                return;
+            }
+       
+            Debug.WriteLine("[ "+ deviceName +" ] received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+
+            lbl_received_data.Text = DataReceived;
+            lbl_sender.Text = args.Socket.Information.RemoteHostName.ToString();
+            lbl_sender_ip.Text = args.Socket.Information.RemoteAddress.ToString();
+         
+            // Sending reply
+            //this.SocketManager.SendData(args.Socket.Information.RemoteAddress, "Hello Client!");
         }
 
 
