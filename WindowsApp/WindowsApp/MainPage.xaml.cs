@@ -5,9 +5,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking;
+using Windows.Networking.Sockets;
+using Windows.Storage.Streams;
+
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,72 +32,36 @@ namespace WindowsApp
     public sealed partial class MainPage : Page
     {
         StreamSocketClass SocketManager;
-        HostName ServerAdress = new HostName("healthHub");
 
         public MainPage()
         {
             this.InitializeComponent();
+
+            txt_hostname.Text = "MSI";
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            SocketManager = new StreamSocketClass(event_function = this.__connectionReceived);
+            SocketManager = new StreamSocketClass(event_function: this.__connectionReceived);
             SocketManager.OpenListenPorts();
         }
 
         private void __btn_send_Click(object sender, RoutedEventArgs e)
         {
-            SocketManager.SendResponse(new HostName(txt_hostname.Text), txt_msg.Text);
+            SocketManager.SendData(new HostName(txt_hostname.Text), txt_msg.Text);
         }
 
         public async void __connectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             Debug.WriteLine("event fired");
-            DataReader DataListener_Reader;
-            string DataReceived;
 
-            using (DataListener_Reader = new DataReader(args.Socket.InputStream))
-            {
-                StringBuilder builder;
-                builder = new StringBuilder();
-                DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
-                DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
-                DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+            var m =  new MessageDialog("event fired");
 
-                await DataListener_Reader.LoadAsync(256);
+            await m.ShowAsync();
 
-                while (DataListener_Reader.UnconsumedBufferLength > 0)
-                {
-                    builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
-                    await DataListener_Reader.LoadAsync(256);
-                }
-                DataListener_Reader.DetachStream();
-                DataReceived = builder.ToString();
-            }
- 
-            if(DataReceived != null)
-            {
-                // Server
-                if(IsServer)
-                {
-                    Debug.WriteLine("[SERVER] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
-                    // Sending reply
-                    SendResponse(args.Socket.Information.RemoteAddress, "Hello Client!");
-                }
-                // Client
-                else
-                {
-                    Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
-                }
-            }
-            else
-            {
-                Debug.WriteLine("Received data was empty. Check if you sent data.");
-            }
+            string data = await SocketManager.ExtractReceivedData(args.Socket.InputStream);
 
         }
-
-
 
     }
 }

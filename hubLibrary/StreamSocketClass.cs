@@ -54,34 +54,56 @@ namespace HubLibrary
 
         }
 
-        public async void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        public async Task<string> ExtractReceivedData(IInputStream stream)
+        {
+            DataReader DataListener_Reader = new DataReader(stream);
+
+            StringBuilder builder = new StringBuilder();
+
+            DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
+            DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+            DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+
+            await DataListener_Reader.LoadAsync(256);
+
+            while (DataListener_Reader.UnconsumedBufferLength > 0)
+            {
+                builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
+                await DataListener_Reader.LoadAsync(256);
+            }
+
+            DataListener_Reader.DetachStream();
+
+            return builder.ToString();
+        }
+
+        async void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             Debug.WriteLine("Default Event fired");
 
-            DataReader DataListener_Reader;
             string DataReceived;
 
-            using (DataListener_Reader = new DataReader(args.Socket.InputStream))
-            {
-                StringBuilder builder;
-                builder = new StringBuilder();
-                DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
-                DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
-                DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
+            //using (DataReader DataListener_Reader = new DataReader(args.Socket.InputStream))
+            //{
+            //    StringBuilder builder;
+            //    builder = new StringBuilder();
+            //    DataListener_Reader.InputStreamOptions = InputStreamOptions.Partial;
+            //    DataListener_Reader.UnicodeEncoding = Windows.Storage.Streams.UnicodeEncoding.Utf8;
+            //    DataListener_Reader.ByteOrder = ByteOrder.LittleEndian;
 
-                await DataListener_Reader.LoadAsync(256);
+            //    await DataListener_Reader.LoadAsync(256);
 
-                while (DataListener_Reader.UnconsumedBufferLength > 0)
-                {
-                    builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
-                    await DataListener_Reader.LoadAsync(256);
-                }
-                DataListener_Reader.DetachStream();
-                DataReceived = builder.ToString();
-            }
+            //    while (DataListener_Reader.UnconsumedBufferLength > 0)
+            //    {
+            //        builder.Append(DataListener_Reader.ReadString(DataListener_Reader.UnconsumedBufferLength));
+            //        await DataListener_Reader.LoadAsync(256);
+            //    }
+            //    DataListener_Reader.DetachStream();
+            //    DataReceived = builder.ToString();
+            //}
 
+            DataReceived = await this.ExtractReceivedData(args.Socket.InputStream);
             
- 
             if(DataReceived == null)
             {
                 Debug.WriteLine("Received data was empty. Check if you sent data.");
@@ -114,6 +136,7 @@ namespace HubLibrary
 
                 // Create a DataWriter
                 DataWriter writer = new DataWriter(ConnectionSocket.OutputStream);
+
                 byte[] data = Encoding.UTF8.GetBytes(DataToSend);
 
                 // Write the bytes
@@ -139,5 +162,19 @@ namespace HubLibrary
  
             }
         }
+
+        public string ParceInput(string input)
+        {
+            var s = input.Split("___");
+
+            switch(Int32.Parse(s[0]))
+            {
+
+                default:
+                    break;
+            }
+            return "";
+        }
+
     }
 }

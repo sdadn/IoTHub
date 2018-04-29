@@ -8,6 +8,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock HorizontalAlignment="Left" Margin="236,270,0,0" Text="Received Data:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lbl_received_data" HorizontalAlignment="Left" Margin="403,270,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="236,344,0,0" Text="Sender Name:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lbl_sender" HorizontalAlignment="Left" Margin="403,344,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="236,399,0,0" Text="Sender IP:" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="lbl_sender_ip" HorizontalAlignment="Left" Margin="403,399,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
+
 </Page>

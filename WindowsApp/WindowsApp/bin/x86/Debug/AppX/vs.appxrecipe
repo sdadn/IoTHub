@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-27T16:11:08.208</Modified>
+      <Modified>2018-04-28T21:44:42.685</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\bin\x86\Debug\WindowsApp.exe">
       <PackagePath>entrypoint\WindowsApp.exe</PackagePath>
-      <Modified>2018-04-27T05:21:14.089</Modified>
+      <Modified>2018-04-28T21:44:42.321</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\NuGetPackages\microsoft.csharp\4.0.1\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -548,7 +548,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\bin\x86\Debug\Core\WindowsApp.exe">
       <PackagePath>WindowsApp.exe</PackagePath>
-      <Modified>2018-04-27T16:11:08.181</Modified>
+      <Modified>2018-04-28T21:44:42.665</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
