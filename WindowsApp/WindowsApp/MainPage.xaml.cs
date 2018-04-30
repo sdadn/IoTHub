@@ -42,6 +42,8 @@ namespace WindowsApp
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DataAccess.Hub.InitializeDB_HUB();
+
             SocketManager = new StreamSocketClass(event_function: this.__connectionReceived);
             SocketManager.OpenListenPorts();
         }
@@ -50,9 +52,7 @@ namespace WindowsApp
         {
             DataAccess.Hub.resetDB();
 
-            DataAccess.Hub.InitializeDB_HUB();
 
-            //DataAccess.Hub.AddAdmin("name", "pass");
 
             bool x = DataAccess.Hub.CheckAdmin();
 
@@ -61,6 +61,22 @@ namespace WindowsApp
 
             //SocketManager.SendData(new HostName(txt_hostname.Text), txt_msg.Text);
         }
+
+        private void __btn_addAdmin_Click(object sender, RoutedEventArgs e)
+        {
+            DataAccess.Hub.AddAdmin("name", "pass");
+        }
+
+        private void __btn_readData_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void __btn_addDevice_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         public async void __connectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
