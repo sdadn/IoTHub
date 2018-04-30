@@ -48,7 +48,18 @@ namespace WindowsApp
 
         private void __btn_send_Click(object sender, RoutedEventArgs e)
         {
-            SocketManager.SendData(new HostName(txt_hostname.Text), txt_msg.Text);
+            DataAccess.Hub.resetDB();
+
+            DataAccess.Hub.InitializeDB_HUB();
+
+            //DataAccess.Hub.AddAdmin("name", "pass");
+
+            bool x = DataAccess.Hub.CheckAdmin();
+
+            Debug.WriteLine("Num IsAdmin rows = " + x.ToString());
+
+
+            //SocketManager.SendData(new HostName(txt_hostname.Text), txt_msg.Text);
         }
 
         public async void __connectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)

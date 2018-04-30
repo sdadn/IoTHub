@@ -79,6 +79,12 @@ namespace HubApp
         private  void btn_scanWifi_Click(object sender, RoutedEventArgs e)
         {
             // await wifi.networks_scan("SSM");
+
+            DataAccess.Hub.InitializeDB_HUB();
+
+            bool x = DataAccess.Hub.CheckAdmin("");
+
+            Debug.WriteLine("Num IsAdmin rows = " + x.ToString());
         }
 
 

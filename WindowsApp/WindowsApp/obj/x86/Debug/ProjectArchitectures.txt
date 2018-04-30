@@ -1,1 +1,2 @@
+C:\Users\saad_temp\Documents\GitHub\IoTHub\HubLibrary\HubLibrary\HubLibrary.csproj;x86
 C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\WindowsApp.csproj;x86

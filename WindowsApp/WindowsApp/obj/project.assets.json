@@ -334,6 +334,20 @@
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.16299/win10-arm": {
@@ -832,6 +846,20 @@
         },
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
+        }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
         }
       }
     },
@@ -1333,6 +1361,20 @@
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.16299/win10-x64": {
@@ -1831,6 +1873,20 @@
         },
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
+        }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
         }
       }
     },
@@ -2332,6 +2388,20 @@
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
         }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0.16299/win10-x86": {
@@ -2830,6 +2900,20 @@
         },
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
+        }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
         }
       }
     },
@@ -3330,6 +3414,20 @@
         },
         "runtime": {
           "lib/uap10.0/SQLitePCLRaw.provider.e_sqlite3.dll": {}
+        }
+      },
+      "HubLibrary/1.0.0": {
+        "type": "project",
+        "framework": "UAP,Version=v10.0.16299",
+        "dependencies": {
+          "Microsoft.Data.Sqlite": "2.0.1",
+          "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.8"
+        },
+        "compile": {
+          "bin/placeholder/HubLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/HubLibrary.dll": {}
         }
       }
     }
@@ -6945,10 +7043,16 @@
         "sqlitepclraw.provider.e_sqlite3.uwp10.1.1.7.nupkg.sha512",
         "sqlitepclraw.provider.e_sqlite3.uwp10.nuspec"
       ]
+    },
+    "HubLibrary/1.0.0": {
+      "type": "project",
+      "path": "../../HubLibrary/HubLibrary/HubLibrary.csproj",
+      "msbuildProject": "../../HubLibrary/HubLibrary/HubLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "UAP,Version=v10.0.16299": [
+      "HubLibrary >= 1.0.0",
       "Microsoft.Data.Sqlite >= 2.0.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.0.8"
     ]
@@ -6986,7 +7090,11 @@
       },
       "frameworks": {
         "uap10.0.16299": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\saad_temp\\Documents\\GitHub\\IoTHub\\HubLibrary\\HubLibrary\\HubLibrary.csproj": {
+              "projectPath": "C:\\Users\\saad_temp\\Documents\\GitHub\\IoTHub\\HubLibrary\\HubLibrary\\HubLibrary.csproj"
+            }
+          }
         }
       }
     },
