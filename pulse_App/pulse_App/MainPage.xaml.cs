@@ -29,16 +29,15 @@ namespace pulse_App
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        const string deviceID = "pulse12345";
         static string deviceName;
-        StreamSocketClass socketManager;
+        //StreamSocketClass socketManager;
 
         public MainPage()
         {
             this.InitializeComponent();
 
             deviceName = "Sensor";
-
-            socketManager = new StreamSocketClass(event_function: this.__ConnectionReceived);
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -47,14 +46,14 @@ namespace pulse_App
             // wifi.Get_adapters();
             //wifi.networks_scan("SSM");
 
-            socketManager.OpenListenPorts();
+            StreamSocketClass.OpenListenPorts("device");
         }
         public async void __ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             Debug.WriteLine("[ " + deviceName + " ]: Receive event fired.");
 
             //DataReader DataListener_Reader;
-            string DataReceived = await socketManager.ExtractReceivedData(args.Socket.InputStream);
+            string DataReceived = await StreamSocketClass.ExtractReceivedData(args.Socket.InputStream);
 
             if (DataReceived == null)
             {

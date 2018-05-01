@@ -12,48 +12,58 @@ using Windows.Storage.Streams;
  
 namespace HubLibrary
 {
-    public class StreamSocketClass
+    public struct Response
     {
+        public HostName dest;
+        public string message;
+
+        public Response(HostName h, string m)
+        {
+            dest = h;
+            message = m;
+        }
+    }
+
+    public static class HubData
+    {
+        public static string HubIP;
+        public static string HubHost;
+
+        public static string DeviceIP;
+        public static string DeviceHost;
+    }
+
+    public static class StreamSocketClass
+    {
+      
         public static bool IsServer { get; set; }
         // Change this. True = server, false = client
-        private string ServerPort;
- 
-        private StreamSocket ConnectionSocket;
 
-        StreamSocketListener listener { get; set; }
+        public static string type;
+        private static string serverPort; 
+        private static  StreamSocket connectionSocket;
 
-        public StreamSocketClass(string port = "12345")
+        static StreamSocketListener Listener { get; set; }
+
+        public static async void OpenListenPorts(string t, string port = "12345")
         {
-            this.ServerPort = port;
-
-            listener = new StreamSocketListener();
-            listener.ConnectionReceived += this.__ConnectionReceivedDefault;
+            type = t;
+            serverPort = port;
+            Listener = new StreamSocketListener();
+            Listener.ConnectionReceived += __ConnectionReceivedDefault;
+            await Listener.BindServiceNameAsync(serverPort);
         }
 
-        public StreamSocketClass(Windows.Foundation.TypedEventHandler<StreamSocketListener, StreamSocketListenerConnectionReceivedEventArgs> event_function,
-                                    string port = "12345")
-        {
-            this.ServerPort = port;
-
-            listener = new StreamSocketListener();
-            listener.ConnectionReceived += event_function;
-        }
-
-        public async void OpenListenPorts()
-        {
-            await listener.BindServiceNameAsync(this.ServerPort);
-        }
-
-        public void getIP()
+        public static void getIP()
         {
         }
 
-        public void IP_Scan()
+        public static void IP_Scan()
         {
 
         }
 
-        public async Task<string> ExtractReceivedData(IInputStream stream)
+        public static async Task<string> ExtractReceivedData(IInputStream stream)
         {
             DataReader DataListener_Reader = new DataReader(stream);
 
@@ -76,7 +86,7 @@ namespace HubLibrary
             return builder.ToString();
         }
 
-        async void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        async static void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             Debug.WriteLine("Default Event fired");
 
@@ -101,7 +111,7 @@ namespace HubLibrary
             //    DataReceived = builder.ToString();
             //}
 
-            DataReceived = await this.ExtractReceivedData(args.Socket.InputStream);
+            DataReceived = await ExtractReceivedData(args.Socket.InputStream);
             
             if(DataReceived == null)
             {
@@ -115,26 +125,44 @@ namespace HubLibrary
                 // Sending reply
                 SendData(args.Socket.Information.RemoteAddress, "Hello Client!");
 
-                return;
+                //return;
             }
             // Client
             Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+
+            Response r = new Response(null, null);
+            switch(type)
+            {
+                case "win":
+                    r = ParseInput_Hub(args.Socket.Information.RemoteAddress, DataReceived);
+                    break;
+                case "hub":
+                    r = ParseInput_Win(args.Socket.Information.RemoteAddress, DataReceived);
+                    break;
+                case "device":
+                    break;
+
+            }
+            SendData(r.dest, r.message);
         }
 
-        public async void SendData(HostName address, string DataToSend)
+        public static async void SendData(HostName address, string DataToSend)
         {
+            if (address == null)
+                return;
+
            try
             {
                 // Try connect
                 Debug.WriteLine("Attempting to connect. " + Environment.NewLine);
 
-                ConnectionSocket = new StreamSocket();
+                connectionSocket = new StreamSocket();
 
                 // Wait on connection
-                await ConnectionSocket.ConnectAsync(address, ServerPort);
+                await connectionSocket.ConnectAsync(address, serverPort);
 
                 // Create a DataWriter
-                DataWriter writer = new DataWriter(ConnectionSocket.OutputStream);
+                DataWriter writer = new DataWriter(connectionSocket.OutputStream);
 
                 byte[] data = Encoding.UTF8.GetBytes(DataToSend);
 
@@ -150,21 +178,22 @@ namespace HubLibrary
                 Debug.WriteLine("Connection has been made and your message " + DataToSend + " has been sent." + Environment.NewLine);
 
                 // Dispose the connection.
-                ConnectionSocket.Dispose();
-                ConnectionSocket = new StreamSocket();
+                connectionSocket.Dispose();
+                connectionSocket = new StreamSocket();
             }
             catch (Exception exception)
             {
                 Debug.WriteLine("Failed to connect " + exception.Message);
-                ConnectionSocket.Dispose();
-                ConnectionSocket = null;
+                connectionSocket.Dispose();
+                connectionSocket = null;
  
             }
         }
 
-        public string ParceInput(string input)
+        public static Response ParseInput_Hub(HostName host, string input)
         {
             var s = input.Split("___");
+            Response ret = new Response(null, null);
 
             switch (Int32.Parse(s[0]))
             {
@@ -173,13 +202,55 @@ namespace HubLibrary
 
                     break;
                 case 2:
+                    //add admin
+                    //2_username_pass
+                    int result = DataAccess.Hub.AddAdmin(s[1], s[2]);
+
+                    if (result == 0)
+                    {
+                        ret = new Response(host,"2_fail");
+                        break;
+                    }
+
+                    ret = new Response(host, "2_success");
+
+                    break;
                 case 3:
+                    //add device
+                    //3__deviceIP
+
+
+                    break;
                 case 4:
 
+                    break;
+                case 5:
+                    //add hub
+                    //5_username
+                    break;
+
                 default:
+
                     break;
             }
-            return "";
+            return ret;
+        }
+
+        public static Response ParseInput_Win(HostName host, string input)
+        {
+            Response ret = new Response(null, null);
+            string[] s = input.Split("__");
+            switch(Int32.Parse(s[0]))
+            {
+                case 5:
+                    if(s[1]=="success")
+                    {
+
+                    }
+                    break;
+            }
+
+            return ret;
         }
 
     }

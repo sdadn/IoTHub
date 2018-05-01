@@ -6,17 +6,37 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Background>
+        <AcrylicBrush TintOpacity="0.84" BackgroundSource="Backdrop"/>
+    </Page.Background>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,123,470,70">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button x:ConnectionId='1' x:Name="___No_Name_btn_send" Content="Send text" HorizontalAlignment="Left" Margin="525,287,-633,0" VerticalAlignment="Top" Height="48" Width="108" RenderTransformOrigin="0.577,-1.826"                         />
-        <TextBox x:ConnectionId='2' x:Name="txt_hostname" HorizontalAlignment="Left" Margin="312,189,-483,0" Text="healthHub" VerticalAlignment="Top" Height="48" Width="171"/>
-        <TextBlock HorizontalAlignment="Left" Height="45" Margin="198,189,0,0" Text="Host" TextWrapping="Wrap" VerticalAlignment="Top" Width="84"/>
-        <TextBlock HorizontalAlignment="Left" Margin="198,287,-256,0" Text="Message" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="1.306,-0.087" Height="20" Width="58"/>
-        <TextBox x:ConnectionId='3' x:Name="txt_msg" HorizontalAlignment="Left" Margin="312,287,-483,0" Text="TextBox" VerticalAlignment="Top" Height="48" Width="171"/>
 
-    </Grid>
+    <NavigationView x:ConnectionId='1' 
+        x:Name="navView"
+        
+        
+        
+                                           
+                                 
+                                                      
+        
+    >
+        <NavigationView.Background>
+            <AcrylicBrush Opacity="0.645" BackgroundSource="HostBackdrop" TintOpacity="0.4"/>
+        </NavigationView.Background>
+
+
+        <NavigationView.MenuItems>
+            <NavigationViewItem Icon="SwitchApps" Content="Devices" Tag="devicePage"/>
+            <NavigationViewItem Icon="Contact" Content="Users" Tag="userPage"/>
+            <NavigationViewItem Icon="Admin" Content="Admin" Tag="adminPage"/>
+
+        </NavigationView.MenuItems>
+        <Frame x:ConnectionId='2' x:Name="contentFrame" Margin="0,-48,0,0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+        </Frame>
+
+    </NavigationView>
+
+
 </Page>
 

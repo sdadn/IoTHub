@@ -12,7 +12,7 @@ using Windows.Foundation.Collections;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
-
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -31,28 +31,26 @@ namespace WindowsApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        StreamSocketClass SocketManager;
 
         public MainPage()
         {
             this.InitializeComponent();
+            StreamSocketClass.OpenListenPorts();
+            DataAccess.Hub.InitializeDB_HUB();
 
-            txt_hostname.Text = "MSI";
+            //txt_hostname.Text = "MSI";
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            DataAccess.Hub.InitializeDB_HUB();
+            contentFrame.Navigate(typeof(devicePage));
 
-            SocketManager = new StreamSocketClass(event_function: this.__connectionReceived);
-            SocketManager.OpenListenPorts();
+            
         }
 
         private void __btn_send_Click(object sender, RoutedEventArgs e)
         {
             DataAccess.Hub.resetDB();
-
-
 
             bool x = DataAccess.Hub.CheckAdmin();
 
@@ -86,9 +84,46 @@ namespace WindowsApp
 
             await m.ShowAsync();
 
-            string data = await SocketManager.ExtractReceivedData(args.Socket.InputStream);
+            string data = await StreamSocketClass.ExtractReceivedData(args.Socket.InputStream);
 
         }
 
+
+        // ---------------- NavView Events -------------------
+
+        private void __NavView_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void __navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            args.SelectedItem.ToString();
+        }
+
+        private void __navView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            //contentFrame.Navigate()
+
+            NavigationViewItem item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+      
+            switch (item.Tag){
+                case "devicePage":
+                    contentFrame.Navigate(typeof(devicePage));
+
+                    break;
+                case "userPage":
+                    contentFrame.Navigate(typeof(userPage));
+
+                    break;
+                case "adminPage":
+                    contentFrame.Navigate(typeof(adminPage));
+
+                    break;
+            }
+
+
+
+        }
     }
 }

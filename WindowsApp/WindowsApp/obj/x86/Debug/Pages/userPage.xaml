@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="WindowsApp.userPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" MinHeight="224" MinWidth="300" MaxHeight="800" MaxWidth="1200">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <RichTextBlock HorizontalAlignment="Left" Height="46" Margin="40,121,0,0" VerticalAlignment="Top" Width="148">
+            <Paragraph>
+                <Run Text="RichTextBlock"/>
+            </Paragraph>
+        </RichTextBlock>
+        <Button x:ConnectionId='1' x:Name="btn_newUser" Content="New User" HorizontalAlignment="Left" Margin="378,184,0,0" VerticalAlignment="Top">
+            <Button.Background>
+                <AcrylicBrush BackgroundSource="HostBackdrop"/>
+            </Button.Background>
+            <Button.FocusVisualPrimaryBrush>
+                <AcrylicBrush BackgroundSource="HostBackdrop"/>
+            </Button.FocusVisualPrimaryBrush>
+        </Button>
+    </Grid>
+</Page>
+

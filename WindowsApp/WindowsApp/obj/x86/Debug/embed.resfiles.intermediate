@@ -1,2 +1,5 @@
 App.xbf
 MainPage.xbf
+Pages\adminPage.xbf
+Pages\devicePage.xbf
+Pages\userPage.xbf

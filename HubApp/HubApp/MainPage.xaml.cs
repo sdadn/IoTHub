@@ -26,7 +26,7 @@ using Windows.Networking.Sockets;
 using Windows.Networking;
 using Windows.Storage.Streams;
 
-
+using HubLibrary;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,21 +40,17 @@ namespace HubApp
         static string deviceName = "Hub";
         // WiFiAdapter w_adapter;
 
-        StreamSocketClass SocketManager ;
         static string PortNumber = "4040";
 
         public MainPage()
         {
             this.InitializeComponent();
-            SocketManager = new StreamSocketClass();
+            StreamSocketClass.OpenListenPorts("hub");
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            SocketManager.OpenListenPorts();
-
             Debug.WriteLine("["+ deviceName +"] Ready to send & receive");
-
         }
 
         private async void socket_Listener(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs e)
@@ -82,7 +78,7 @@ namespace HubApp
 
             DataAccess.Hub.InitializeDB_HUB();
 
-            bool x = DataAccess.Hub.CheckAdmin("");
+            bool x = DataAccess.Hub.CheckAdmin();
 
             Debug.WriteLine("Num IsAdmin rows = " + x.ToString());
         }
@@ -93,7 +89,7 @@ namespace HubApp
             Debug.WriteLine("[ " + deviceName + " ]: Receive event fired.");
 
             //DataReader DataListener_Reader;
-            string DataReceived = await SocketManager.ExtractReceivedData(args.Socket.InputStream);
+            string DataReceived = await StreamSocketClass.ExtractReceivedData(args.Socket.InputStream);
 
 
             if (DataReceived == null)

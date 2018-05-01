@@ -10,9 +10,108 @@ namespace HubLibrary
 {
     public static class DataAccess
     {
+        public static class Win{
+
+            const string filename = "Filename=win.db";
+
+
+            public static void InitializeDB_WIN()
+            {
+                using (SqliteConnection db = new SqliteConnection("Filename=device.db"))
+                {
+                    db.Open();
+
+                    string init_DeviceTable = "CREATE TABLE IF NOT EXISTS Devices ( " +
+                            "DeviceID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                            "DeviceSR TEXT, " +
+                            "DeviceName NVARCHAR(20) NULL)";
+
+                    string init_UserTable = "CREATE TABLE IF NOT EXISTS Users ( " +
+                                            "UserID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                            "Username NVARCHAR(20),  " +
+                                            "Password NVARCHAR(40), " +
+                                            "IsAdmin INTEGER, " +
+                                            "Cert Text)";
+                    string init_HubTable = "CREATE TABLE IF NOT EXISTS Hub ( " +
+                                            "HubID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                            "HubSR NVARCHAR(20),  " +
+                                            "Hostname NVARCHAR(40), " +
+                                            "IP TEXT)";
+
+                    new SqliteCommand(init_DeviceTable, db).ExecuteReader();
+                    new SqliteCommand(init_UserTable, db).ExecuteReader();
+                    new SqliteCommand(init_HubTable, db).ExecuteReader();
+
+                    db.Close();
+                }
+            }
+            public static bool CheckHub()
+            {
+                using (SqliteConnection db = new SqliteConnection(filename))
+                {
+                    db.Open();
+
+                    string cmd = "SELECT * from Users where IsAdmin = \'1\'";
+
+                    SqliteDataReader query = new SqliteCommand(cmd, db).ExecuteReader();
+
+                    db.Close();
+
+                    return query.HasRows;
+                }
+            }
+
+            public static int addHub(string sr, string hostname, string ip)
+            {
+                if (CheckHub())
+                    return 0;
+
+                using (SqliteConnection db = new SqliteConnection(filename))
+                {
+                    db.Open();
+
+                    SqliteCommand insertCommand = new SqliteCommand();
+                    insertCommand.Connection = db;
+
+                    // Use parameterized query to prevent SQL injection attacks
+                    insertCommand.CommandText = "INSERT INTO Hub VALUES (NULL, @sr, @host, @ip);";
+                    insertCommand.Parameters.AddWithValue("@sr", sr);
+                    insertCommand.Parameters.AddWithValue("@host", hostname);
+                    insertCommand.Parameters.AddWithValue("@ip", ip);
+
+                    insertCommand.ExecuteReader();
+
+
+                    db.Close();
+                }
+                return 1;
+            }
+
+            public static void resetDB()
+            {
+                using (SqliteConnection db = new SqliteConnection(filename))
+                {
+                    db.Open();
+
+                    string drop_tb1 = "DROP TABLE IF EXISTS Users";
+                    string drop_tb2 = "DROP TABLE IF EXISTS Devices";
+                    string drop_tb3 = "DROP TABLE IF EXISTS Devices";
+
+
+                    new SqliteCommand(drop_tb1, db).ExecuteReader();
+                    new SqliteCommand(drop_tb2, db).ExecuteReader();
+                    new SqliteCommand(drop_tb3, db).ExecuteReader();
+
+
+                    db.Close();
+                }
+            }
+        }
+
+
         public static class Hub{
 
-            static string filename ="Filename=hub.db";
+            const string filename ="Filename=hub.db";
 
             public static void InitializeDB_HUB()
             {
@@ -40,10 +139,10 @@ namespace HubLibrary
                 }
             }
 
-            public static void AddAdmin(string username, string Password)
+            public static int AddAdmin(string username, string Password)
             {
                 if (CheckAdmin())
-                    return;
+                    return 0;
 
                 using (SqliteConnection db = new SqliteConnection(filename))
                 {
@@ -63,6 +162,7 @@ namespace HubLibrary
 
                     db.Close();
                 }
+                return 1;
             }
 
             public static bool CheckAdmin()
@@ -102,13 +202,6 @@ namespace HubLibrary
         }
 
 
-        public static class Win{
-
-            public static void InitializeDB_WIN()
-            {
-
-            }
-        }
 
 
         public static class Device{
