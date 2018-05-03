@@ -5,29 +5,64 @@
     xmlns:local="using:WindowsApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Height="Auto" Width="Auto">
 
 
 
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10,10,10,10">
 
-        <TextBox x:Name="txt_hostname" HorizontalAlignment="Left" Margin="172,173,0,0" Text="healthHub" VerticalAlignment="Top" Height="48" Width="171"/>
-        <TextBlock HorizontalAlignment="Left" Height="45" Margin="77,173,0,0" Text="Host" TextWrapping="Wrap" VerticalAlignment="Top" Width="84"/>
-        <TextBlock HorizontalAlignment="Left" Margin="77,272,0,0" Text="Message" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="1.306,-0.087" Height="20" Width="58"/>
-        <TextBox x:Name="txt_msg" HorizontalAlignment="Left" Margin="172,262,0,0" Text="TextBox" VerticalAlignment="Top" Height="48" Width="171"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button x:Name="___No_Name_btn_send" HorizontalAlignment="Left" Margin="348,263,0,0" VerticalAlignment="Top" Height="47" Width="69" RenderTransformOrigin="0.577,-1.826" Click="__btn_send_Click">
-            <Button.Content>
-                <SymbolIcon Symbol="Send" Height="30" Width="40"/>
-            </Button.Content>
-        </Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" Margin="73,431,0,0" Text="Database" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <Button x:Name="btn_resetDB" Content="Reset Local Database" HorizontalAlignment="Right" Margin="0,471,1266,0" VerticalAlignment="Top"/>
-        <Button x:Name="btn_resetHubDB" Content="Reset Hub Database" HorizontalAlignment="Right" Margin="0,528,1266,0" VerticalAlignment="Top" Width="160">
-           
-        </Button>
+        <TextBlock x:Name="txt_test" Grid.Row="1" Grid.Column="2" />
+        
+        <Grid VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock HorizontalAlignment="Center" Text="Network" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="22" Grid.Column="1" Margin="0,0,0,20"/>
+            <TextBlock HorizontalAlignment="Left"  Text="Host" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,30,0" Grid.Row="1" />
+            <TextBox x:Name="txt_hostname" HorizontalAlignment="Stretch" Text="healthHub" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" />
+
+            <TextBlock HorizontalAlignment="Left"  Text="Message" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Row="2" />
+            <TextBox x:Name="txt_msg" HorizontalAlignment="Stretch"  Text="TextBox" VerticalAlignment="Center" PlaceholderText="Enter Message" Grid.Row="2" Grid.Column="1"/>
+
+            <Button x:Name="___No_Name_btn_send" HorizontalAlignment="Center"  VerticalAlignment="Center"  Click="__btn_send_Click" Grid.Row="2" Grid.Column="2">
+                <Button.Content>
+                    <SymbolIcon Symbol="Send" Height="30" Width="40" HorizontalAlignment="Center"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+
+
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" RequestedTheme="Light" Padding="10,10,10,10">
+            <TextBlock HorizontalAlignment="Center" Text="Database" TextWrapping="Wrap" VerticalAlignment="Stretch" Margin="0,10,0,10" FontSize="22"/>
+            <Button x:Name="btn_resetDB" Content="Reset Local Database" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,20,0,20"/>
+            <Button x:Name="btn_resetHubDB" Content="Reset Hub Database" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn_resetHubDB_Click"></Button>
+        </StackPanel>
+
 
     </Grid>
 </Page>

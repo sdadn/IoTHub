@@ -26,7 +26,6 @@ using Windows.Networking.Sockets;
 using Windows.Networking;
 using Windows.Storage.Streams;
 
-using HubLibrary;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -45,6 +44,7 @@ namespace HubApp
         public MainPage()
         {
             this.InitializeComponent();
+            DataAccess.Hub.InitializeDB_HUB();
             StreamSocketClass.OpenListenPorts("hub");
         }
 

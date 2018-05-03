@@ -1,1 +1,2 @@
 C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\HubApp.csproj;arm
+C:\Users\saad_temp\Documents\GitHub\IoTHub\HubLibrary\HubLibrary\HubLibrary.csproj;arm

@@ -1,5 +1,6 @@
 ﻿using HubLibrary;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -35,8 +36,19 @@ namespace WindowsApp
         public MainPage()
         {
             this.InitializeComponent();
-            StreamSocketClass.OpenListenPorts();
-            DataAccess.Hub.InitializeDB_HUB();
+            StreamSocketClass.OpenListenPorts(eventfunction: Pages.WinData.__ConnectionReceivedDefault, t: "win" );
+            DataAccess.Win.InitializeDB_WIN();
+            Pages.WinData.hasHub = false;
+            //check_host:
+
+            if(DataAccess.Win.CheckHub())
+            {
+                Hashtable h = DataAccess.Win.GetHub();
+
+                HubData.HubHost = (string)h["Hostname"];
+
+                Debug.WriteLine(HubData.HubHost);
+            }
 
             //txt_hostname.Text = "MSI";
         }

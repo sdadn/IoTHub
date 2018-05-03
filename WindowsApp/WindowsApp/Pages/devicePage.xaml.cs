@@ -38,8 +38,10 @@ namespace WindowsApp
 
         private void btn_addHub_Click(object sender, RoutedEventArgs e)
         {
-            StreamSocketClass.SendData(new Windows.Networking.HostName("healthHub"), "5__admin__pass");            
+            if (txt_HubHost_newHub.Text == "")
+                return;
 
+            StreamSocketClass.SendData(new Windows.Networking.HostName(txt_HubHost_newHub.Text), "5__admin__pass");       
         }
     }
 }

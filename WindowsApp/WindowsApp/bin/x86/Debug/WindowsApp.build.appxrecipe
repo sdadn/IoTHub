@@ -571,6 +571,9 @@
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\saad_temp\.nuget\packages\sqlitepclraw.lib.e_sqlite3.v140\1.1.7\runtimes\win10-x86\native\e_sqlite3.dll">
+      <PackagePath>HubLibrary\e_sqlite3.dll</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\WindowsApp\WindowsApp\bin\x86\Debug\WindowsApp.xr.xml">
       <PackagePath>WindowsApp.xr.xml</PackagePath>
     </AppxPackagedFile>

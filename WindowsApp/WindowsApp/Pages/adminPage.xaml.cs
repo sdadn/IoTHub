@@ -24,21 +24,38 @@ namespace WindowsApp
     /// </summary>
     public sealed partial class adminPage : Page
     {
+        string abc;
         public adminPage()
         {
             this.InitializeComponent();
+
+            //Binding binding = new Binding();
+            //binding.Source = typeof(MyStaticClass);
+            // System.InvalidOperationException: 'Binding.StaticSource cannot be set while using Binding.Source.'
+            //binding.Path = new PropertyPath(typeof(Pages.WinData).GetProperty(nameof(Pages.WinData.deviceIP)));
+            //binding.Mode = BindingMode.TwoWay;
+            //binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            //this.SetBinding(txt_test.Text, binding);
         }
 
         private void __btn_send_Click(object sender, RoutedEventArgs e)
         {
-            DataAccess.Hub.resetDB();
+            //DataAccess.Hub.resetDB();
 
-            bool x = DataAccess.Hub.CheckAdmin();
+            //bool x = DataAccess.Hub.CheckAdmin();
 
-            Debug.WriteLine("Num IsAdmin rows = " + x.ToString());
+            //Debug.WriteLine("Num IsAdmin rows = " + x.ToString());
 
 
             //SocketManager.SendData(new HostName(txt_hostname.Text), txt_msg.Text);
+
+            StreamSocketClass.SendData(new Windows.Networking.HostName(txt_hostname.Text), txt_msg.Text);
+        }
+
+
+        private void btn_resetHubDB_Click(object sender, RoutedEventArgs e)
+        {
+            StreamSocketClass.SendData(new Windows.Networking.HostName("healthHub"), "6");
         }
     }
 }

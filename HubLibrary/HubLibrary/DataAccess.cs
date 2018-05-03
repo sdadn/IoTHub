@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +19,14 @@ namespace HubLibrary
 
             public static void InitializeDB_WIN()
             {
-                using (SqliteConnection db = new SqliteConnection("Filename=device.db"))
+                using (SqliteConnection db = new SqliteConnection(filename))
                 {
                     db.Open();
 
-                    string init_DeviceTable = "CREATE TABLE IF NOT EXISTS Devices ( " +
-                            "DeviceID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                            "DeviceSR TEXT, " +
-                            "DeviceName NVARCHAR(20) NULL)";
+                    string init_DeviceTable =   "CREATE TABLE IF NOT EXISTS Devices ( " +
+                                                "DeviceID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                "DeviceSR TEXT, " +
+                                                "DeviceName NVARCHAR(20) NULL)";
 
                     string init_UserTable = "CREATE TABLE IF NOT EXISTS Users ( " +
                                             "UserID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -32,6 +34,7 @@ namespace HubLibrary
                                             "Password NVARCHAR(40), " +
                                             "IsAdmin INTEGER, " +
                                             "Cert Text)";
+
                     string init_HubTable = "CREATE TABLE IF NOT EXISTS Hub ( " +
                                             "HubID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                             "HubSR NVARCHAR(20),  " +
@@ -51,7 +54,7 @@ namespace HubLibrary
                 {
                     db.Open();
 
-                    string cmd = "SELECT * from Users where IsAdmin = \'1\'";
+                    string cmd = "SELECT * from Hub";
 
                     SqliteDataReader query = new SqliteCommand(cmd, db).ExecuteReader();
 
@@ -60,7 +63,30 @@ namespace HubLibrary
                     return query.HasRows;
                 }
             }
+            public static Hashtable GetHub()
+            {
+                string[] s;
+                DataTable d = new DataTable();
+                Hashtable h = new Hashtable();
 
+                using (SqliteConnection db = new SqliteConnection(filename))
+                {
+                    db.Open();
+
+                    string cmd = "SELECT * from Hub";
+
+                    SqliteDataReader query = new SqliteCommand(cmd, db).ExecuteReader();
+
+                    db.Close();
+
+                    s = new string[query.FieldCount];
+                    for(int i = 0; i < query.FieldCount; i++)
+                    {
+                        h.Add(query.GetName(i), (query.GetString(i)));
+                    }
+                }
+                return h;
+            }
             public static int addHub(string sr, string hostname, string ip)
             {
                 if (CheckHub())
@@ -122,7 +148,7 @@ namespace HubLibrary
 
                     string init_DeviceTable =   "CREATE TABLE IF NOT EXISTS Devices ( " +
                                                 "DeviceID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                                "DeviceSR TEXT, " +
+                                                "DeviceIP TEXT, " +
                                                 "DeviceName NVARCHAR(20) NULL)";
 
                     string init_UserTable = "CREATE TABLE IF NOT EXISTS Users ( " +
@@ -182,6 +208,24 @@ namespace HubLibrary
                 }
             }
 
+            public static void AddDevice(string ip)
+            {
+                using (SqliteConnection db = new SqliteConnection(filename))
+                {
+                    db.Open();
+
+                    SqliteCommand insertCommand = new SqliteCommand();
+                    insertCommand.Connection = db;
+
+                    // Use parameterized query to prevent SQL injection attacks
+                    insertCommand.CommandText = "INSERT INTO Users VALUES (NULL, @ip, NULL);";
+                    insertCommand.Parameters.AddWithValue("@ip", ip);
+                    insertCommand.ExecuteReader();
+                    
+                    db.Close();
+                }
+            }
+
             public static void resetDB()
             {
                 using (SqliteConnection db = new SqliteConnection(filename))
@@ -190,7 +234,6 @@ namespace HubLibrary
 
                     string drop_tb1 = "DROP TABLE IF EXISTS Users";
                     string drop_tb2 = "DROP TABLE IF EXISTS Devices";
-
 
                     new SqliteCommand( drop_tb1, db).ExecuteReader();
                     new SqliteCommand( drop_tb2, db).ExecuteReader();
@@ -212,17 +255,20 @@ namespace HubLibrary
                 {
                     db.Open();
 
-                    string init_DeviceTable = "CREATE TABLE IF NOT EXISTS " +
-                                            "Devices ( DeviceID INTEGER PRIMARY KEY AUTOINCREMENT, DeviceSR TEXT, DeviceName NVARCHAR(20) NULL)";
+                    string init_HubTable = "CREATE TABLE IF NOT EXISTS Hub ( " +
+                                            "HubID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                            "HubSR NVARCHAR(20),  " +
+                                            "Hostname NVARCHAR(40), " +
+                                            "IP TEXT)";
 
-                    string init_UserTable = "CREATE TABLE IF NOT EXISTS " +
-                                            "Users ( UserID INTEGER PRIMARY KEY AUTOINCREMENT, Username NVARCHAR(20),  Password NVARCHAR(40), IsAdmin INTEGER, Cert Text)";
-
-                    new SqliteCommand(init_DeviceTable, db).ExecuteReader();
-                    new SqliteCommand(init_UserTable, db).ExecuteReader();
-
+                    new SqliteCommand(init_HubTable, db).ExecuteReader();
                     db.Close();
                 }
+
+            }
+
+            public static void AddHub()
+            {
 
             }
         }

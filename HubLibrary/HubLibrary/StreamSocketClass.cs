@@ -28,6 +28,7 @@ namespace HubLibrary
     {
         public static string HubIP;
         public static string HubHost;
+        public static string HubSR;
 
         public static string DeviceIP;
         public static string DeviceHost;
@@ -51,6 +52,14 @@ namespace HubLibrary
             serverPort = port;
             Listener = new StreamSocketListener();
             Listener.ConnectionReceived += __ConnectionReceivedDefault;
+            await Listener.BindServiceNameAsync(serverPort);
+        }
+        public static async void OpenListenPorts(Windows.Foundation.TypedEventHandler<StreamSocketListener, StreamSocketListenerConnectionReceivedEventArgs> eventfunction, string t, string port = "12345")
+        {
+            type = t;
+            serverPort = port;
+            Listener = new StreamSocketListener();
+            Listener.ConnectionReceived += eventfunction;
             await Listener.BindServiceNameAsync(serverPort);
         }
 
@@ -131,19 +140,24 @@ namespace HubLibrary
             Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
 
             Response r = new Response(null, null);
+
+            Debug.WriteLine("entering switch");
             switch(type)
             {
                 case "win":
-                    r = ParseInput_Hub(args.Socket.Information.RemoteAddress, DataReceived);
+                    r = ParseInput_Win(args.Socket.Information.RemoteAddress, DataReceived);
                     break;
                 case "hub":
-                    r = ParseInput_Win(args.Socket.Information.RemoteAddress, DataReceived);
+                    //Debug.WriteLine("case hub");
+                    r = ParseInput_Hub(args.Socket.Information.RemoteAddress, DataReceived);
+                    Debug.WriteLine("parsed input");
                     break;
                 case "device":
                     break;
 
             }
             SendData(r.dest, r.message);
+            Debug.WriteLine(r.dest);
         }
 
         public static async void SendData(HostName address, string DataToSend)
@@ -192,41 +206,58 @@ namespace HubLibrary
 
         public static Response ParseInput_Hub(HostName host, string input)
         {
-            var s = input.Split("___");
-            Response ret = new Response(null, null);
+            var s = input.Split("__");
 
-            switch (Int32.Parse(s[0]))
+            Response ret = new Response(host, "");
+
+            Debug.WriteLine("[ParseInput_Hub] split contents: " + s);
+
+            switch (s[0])
             {
                 // Create User
-                case 1:
+                case "1":
 
                     break;
-                case 2:
+                case "2":
                     //add admin
                     //2_username_pass
                     int result = DataAccess.Hub.AddAdmin(s[1], s[2]);
 
                     if (result == 0)
                     {
-                        ret = new Response(host,"2_fail");
+                        ret = new Response(host,"2__fail");
                         break;
                     }
 
-                    ret = new Response(host, "2_success");
+                    ret = new Response(host, "2__success");
 
                     break;
-                case 3:
+                case "3":
                     //add device
-                    //3__deviceIP
+                    //3__deviceIP__
+
+                    //DataAccess.Hub.AddDevice();
 
 
                     break;
-                case 4:
+                case "4":
 
                     break;
-                case 5:
+                case "5":
                     //add hub
-                    //5_username
+                    //5__username__password
+                    Debug.WriteLine("case 5 started");
+                    DataAccess.Hub.AddAdmin(s[1], s[2]);
+                    //Debug.WriteLine("case 5");
+                    ret.message = "6__success";
+                    break;
+
+                case "6":
+                    Debug.WriteLine("case 6 started");
+                    DataAccess.Hub.resetDB();
+                    Debug.WriteLine("Db Reset");
+
+                    ret.message = "6__success";
                     break;
 
                 default:
@@ -238,15 +269,19 @@ namespace HubLibrary
 
         public static Response ParseInput_Win(HostName host, string input)
         {
-            Response ret = new Response(null, null);
+            Response ret = new Response(host, null);
             string[] s = input.Split("__");
             switch(Int32.Parse(s[0]))
             {
                 case 5:
                     if(s[1]=="success")
                     {
-
+                        DataAccess.Win.addHub(HubData.HubSR, HubData.HubHost, HubData.HubIP);
                     }
+                    break;
+                case 6:
+                    if(s[1] == "success")
+                    ret.message = "6__success";
                     break;
             }
 
