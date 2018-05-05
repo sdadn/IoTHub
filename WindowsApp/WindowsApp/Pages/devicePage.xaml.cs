@@ -33,15 +33,38 @@ namespace WindowsApp
 
         private void btn_addDevice_Click(object sender, RoutedEventArgs e)
         {
-         //   StreamSocketClass.SendData("");
+            //   StreamSocketClass.SendData("");
+
+            if (txt_deviceHostName_addDevice.Text == "")
+                return;
+            string command = "3__ip_" + txt_deviceHostName_addDevice.Text + "__" + txt_AdminName_newHub.Text + "__"+ txt_Adminpass_newHub.Password;
+
+            StreamSocketClass.SendData(new Windows.Networking.HostName(HubData.HubHost),command);
         }
 
         private void btn_addHub_Click(object sender, RoutedEventArgs e)
         {
             if (txt_HubHost_newHub.Text == "")
                 return;
+            string command = "5__" + txt_AdminName_newHub.Text + "__" + txt_Adminpass_newHub.Password;
+            StreamSocketClass.SendData(new Windows.Networking.HostName(txt_HubHost_newHub.Text), command);       
+        }
 
-            StreamSocketClass.SendData(new Windows.Networking.HostName(txt_HubHost_newHub.Text), "5__admin__pass");       
+        private void btn_addHub_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (txt_HubHost_newHub.Text == "")
+                return;
+            string command = "5__" + txt_AdminName_newHub.Text + "__" + txt_Adminpass_newHub.Password;
+            StreamSocketClass.SendData(new Windows.Networking.HostName(txt_HubHost_newHub.Text), command);
+        }
+
+        private void btn_addDevice_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (txt_deviceHostName_addDevice.Text == "")
+                return;
+            string command = "3__ip_" + txt_deviceHostName_addDevice.Text + "__" + txt_AdminName_newHub.Text + "__" + txt_Adminpass_newHub.Password;
+
+            StreamSocketClass.SendData(new Windows.Networking.HostName(HubData.HubHost), command);
         }
     }
 }

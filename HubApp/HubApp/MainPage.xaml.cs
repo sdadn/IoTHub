@@ -46,6 +46,11 @@ namespace HubApp
             this.InitializeComponent();
             DataAccess.Hub.InitializeDB_HUB();
             StreamSocketClass.OpenListenPorts("hub");
+
+            HubData.HubSR = "hub001";
+            HubData.HubHost = System.Net.Dns.GetHostName();
+            HubData.HubIP = "123";
+            Debug.WriteLine(HubData.HubHost);
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -86,7 +91,7 @@ namespace HubApp
 
         public async void __ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
-            Debug.WriteLine("[ " + deviceName + " ]: Receive event fired.");
+            //Debug.WriteLine("[ " + deviceName + " ]: Receive event fired.");
 
             //DataReader DataListener_Reader;
             string DataReceived = await StreamSocketClass.ExtractReceivedData(args.Socket.InputStream);
@@ -98,7 +103,7 @@ namespace HubApp
                 return;
             }
        
-            Debug.WriteLine("[ "+ deviceName +" ] received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+            //Debug.WriteLine("[ "+ deviceName +" ] received " + DataReceived + " from " + args.Socket.Information.RemoteHostName.DisplayName);
 
             lbl_received_data.Text = DataReceived;
             lbl_sender.Text = args.Socket.Information.RemoteHostName.ToString();

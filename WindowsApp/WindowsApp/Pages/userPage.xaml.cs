@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using HubLibrary;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace WindowsApp
@@ -25,6 +27,18 @@ namespace WindowsApp
         public userPage()
         {
             this.InitializeComponent();
+        }
+
+ 
+
+        private void btn_device_data_Click(object sender, RoutedEventArgs e)
+        {
+            StreamSocketClass.SendData(new Windows.Networking.HostName("healthSensor"), "7__user");
+        }
+
+        private void btn_hub_data_Click(object sender, RoutedEventArgs e)
+        {
+            StreamSocketClass.SendData(new Windows.Networking.HostName("healthHub"), "7");
         }
     }
 }

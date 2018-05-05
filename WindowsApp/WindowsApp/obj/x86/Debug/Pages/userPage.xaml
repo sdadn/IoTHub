@@ -8,20 +8,60 @@
     mc:Ignorable="d" MinHeight="224" MinWidth="300" MaxHeight="800" MaxWidth="1200">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock HorizontalAlignment="Left" Margin="40,40,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <RichTextBlock HorizontalAlignment="Left" Height="46" Margin="40,121,0,0" VerticalAlignment="Top" Width="148">
-            <Paragraph>
-                <Run Text="RichTextBlock"/>
-            </Paragraph>
-        </RichTextBlock>
-        <Button x:ConnectionId='1' x:Name="btn_newUser" Content="New User" HorizontalAlignment="Left" Margin="378,184,0,0" VerticalAlignment="Top">
-            <Button.Background>
-                <AcrylicBrush BackgroundSource="HostBackdrop"/>
-            </Button.Background>
-            <Button.FocusVisualPrimaryBrush>
-                <AcrylicBrush BackgroundSource="HostBackdrop"/>
-            </Button.FocusVisualPrimaryBrush>
-        </Button>
+
+     
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+
+
+
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Padding="20,10,20,10">
+            <TextBlock Text="Data from Hub" Margin="0,10,0,10" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" FontFamily="Calibri Light"/>
+
+            <!--<TextBox x:Name="txt_HubSR_newHub" Margin="0,0,0,10" Header="Serial Number"/>
+
+            <TextBox x:Name="txt_HubIP_newHub" Header="Hub IP" Margin="0,0,0,10"/>
+
+            <TextBox x:Name ="txt_HubHost_newHub" Header="Hub HostName" Margin="0,0,0,10" />
+
+            <TextBox x:Name="txt_AdminName_newHub" Header="Admin Username" Margin="0,0,0,10"/>
+
+            <PasswordBox x:Name="txt_Adminpass_newHub" Header="Admin Password" Margin="0,0,0,10"/>
+
+            <TextBox Header="User-Friendly Name" Margin="0,0,0,10" />-->
+
+            <!--<Button x:Name="btn_dataHub" Content="Hub Data" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn_addHub_Click" Margin="50,0,50,0"/>-->
+
+            <Button x:ConnectionId='2' x:Name="btn_hub_data" Content="get data from hub"                           />
+
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Grid.Row="1"  Padding="20,10,20,10" VerticalAlignment="Stretch">
+            <TextBlock Text="Data from Device"  Margin="0,10,0,10" FontSize="22" FontFamily="Calibri Light" HorizontalAlignment="Center"/>
+            <!--<TextBox x:Name="txt_deviceIP_addDevice" Header="Device IP" Margin="0,0,0,10"/>
+            <TextBox x:Name="txt_deviceHostName_addDevice" Header="Device HostName" Margin="0,0,0,10"/>-->
+            <Button x:ConnectionId='1' x:Name="btn_device_data" Content="get data from device"                              />
+
+            <!--<Button x:Name="btn_deviceData" Content="Add Device" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="btn_addDevice_Click" Margin="15,0,15,0"/>-->
+
+        </StackPanel>
+
+
+
+
     </Grid>
 </Page>
 

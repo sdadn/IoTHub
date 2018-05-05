@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-03T01:50:26.252</Modified>
+      <Modified>2018-05-03T20:00:33.968</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\HubApp.exe">
       <PackagePath>entrypoint\HubApp.exe</PackagePath>
-      <Modified>2018-05-03T01:50:23.598</Modified>
+      <Modified>2018-05-03T20:00:31.388</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\.nuget\packages\microsoft.data.sqlite.core\2.0.1\lib\netstandard2.0\Microsoft.Data.Sqlite.dll">
       <PackagePath>Microsoft.Data.Sqlite.dll</PackagePath>
@@ -721,7 +721,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubLibrary\HubLibrary\bin\ARM\Debug\HubLibrary.dll">
       <PackagePath>HubLibrary.dll</PackagePath>
-      <Modified>2018-05-03T01:50:13.877</Modified>
+      <Modified>2018-05-03T20:00:09.438</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\Properties\Default.rd.xml">
       <PackagePath>Properties\Default.rd.xml</PackagePath>
@@ -776,11 +776,11 @@
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-05-03T01:50:24.298</Modified>
+      <Modified>2018-05-03T20:00:32.052</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\saad_temp\Documents\GitHub\IoTHub\HubApp\HubApp\bin\ARM\Debug\Core\HubApp.exe">
       <PackagePath>HubApp.exe</PackagePath>
-      <Modified>2018-05-03T01:50:26.228</Modified>
+      <Modified>2018-05-03T20:00:33.948</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

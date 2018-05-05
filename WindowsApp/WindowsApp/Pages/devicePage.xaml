@@ -43,11 +43,11 @@
 
             <TextBox x:Name="txt_AdminName_newHub" Header="Admin Username" Margin="0,0,0,10"/>
 
-            <TextBox x:Name="txt_Adminpass_newHub" Header="Admin Password" Margin="0,0,0,10"/>
+            <PasswordBox x:Name="txt_Adminpass_newHub" Header="Admin Password" Margin="0,0,0,10"/>
 
             <TextBox Header="User-Friendly Name" Margin="0,0,0,10" />
 
-            <Button x:Name="btn_addHub" Content="Add Hub" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="btn_addHub_Click" Margin="50,0,50,0"/>
+            <Button x:Name="btn_addHub" Content="Add Hub" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="50,0,50,0" Click="btn_addHub_Click_1"/>
 
         </StackPanel>
 
@@ -56,7 +56,7 @@
             <TextBox x:Name="txt_deviceIP_addDevice" Header="Device IP" Margin="0,0,0,10"/>
             <TextBox x:Name="txt_deviceHostName_addDevice" Header="Device HostName" Margin="0,0,0,10"/>
 
-            <Button x:Name="btn_addDevice" Content="Add Device" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Click="btn_addDevice_Click"/>
+            <Button x:Name="btn_addDevice" Content="Add New Device" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="15,0,15,0" Click="btn_addDevice_Click_1"/>
 
         </StackPanel>
 

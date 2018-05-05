@@ -25,7 +25,7 @@ namespace WindowsApp.Pages
 
         public async static void __ConnectionReceivedDefault(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
-            Debug.WriteLine("WinData Event fired");
+            Debug.WriteLine("Data Received");
 
             string DataReceived;
 
@@ -37,7 +37,7 @@ namespace WindowsApp.Pages
                 return;
             }
      
-            Debug.WriteLine("[Win] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+            //Debug.WriteLine("[Win] I've received " + DataReceived + " from " + args.Socket.Information.RemoteAddress);
 
             Response r = ParseInput(args.Socket.Information.RemoteHostName, DataReceived);
 
@@ -72,6 +72,8 @@ namespace WindowsApp.Pages
             {
                 case 3:
                     //adding device
+                    if (s[1] == "success")
+                        Debug.WriteLine("added device " + s[2]);
                     break;
                 case 5:
                     //5__success__SR__hostname__IP
@@ -82,6 +84,7 @@ namespace WindowsApp.Pages
                         HubData.HubIP = s[4];
                         DataAccess.Win.addHub(HubData.HubSR, HubData.HubHost, HubData.HubIP);
                         Debug.WriteLine("Hub [" + HubData.HubSR + "] successfully added");
+                        break;
                     }
                     Debug.WriteLine("Adding new hub failed. hub is either unavailable or already exists.");
                     break;
@@ -92,6 +95,18 @@ namespace WindowsApp.Pages
                         //ret.message = "6__success";
                         break;
                     }
+                    break;
+                case 7:
+                    if(s[1] == "fail")
+                    {
+                        Debug.WriteLine("Not an authenticated user. Send request through Hub\n");
+                        break;
+                    }
+                    Debug.WriteLine("Sensor Data\n");
+                    break;
+
+                case 8:
+                    Debug.WriteLine("Device Added\n");
                     break;
             }
 

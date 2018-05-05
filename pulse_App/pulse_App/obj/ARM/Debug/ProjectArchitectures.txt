@@ -1,0 +1,2 @@
+C:\Users\saad_temp\Documents\GitHub\IoTHub\HubLibrary\HubLibrary\HubLibrary.csproj;arm
+C:\Users\saad_temp\Documents\GitHub\IoTHub\pulse_App\pulse_App\pulse_App.csproj;arm

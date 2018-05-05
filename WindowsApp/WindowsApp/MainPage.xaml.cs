@@ -40,12 +40,19 @@ namespace WindowsApp
             DataAccess.Win.InitializeDB_WIN();
             Pages.WinData.hasHub = false;
             //check_host:
+                HubData.HubSR = "hub001";
+                HubData.HubHost = "healthHub";
+                HubData.HubIP = "123";
+
 
             if(DataAccess.Win.CheckHub())
             {
-                Hashtable h = DataAccess.Win.GetHub();
+                //Hashtable h = DataAccess.Win.GetHub();
 
-                HubData.HubHost = (string)h["Hostname"];
+                //HubData.HubHost = (string)h["Hostname"];
+
+                Pages.WinData.hasHub = true;
+
 
                 Debug.WriteLine(HubData.HubHost);
             }

@@ -137,11 +137,10 @@ namespace HubLibrary
                 //return;
             }
             // Client
-            Debug.WriteLine("[CLIENT] I've received " + DataReceived + " from " + args.Socket.Information.RemoteHostName);
+            Debug.WriteLine("[Hub] I've received input from " + args.Socket.Information.RemoteHostName);
 
             Response r = new Response(null, null);
 
-            Debug.WriteLine("entering switch");
             switch(type)
             {
                 case "win":
@@ -150,7 +149,6 @@ namespace HubLibrary
                 case "hub":
                     //Debug.WriteLine("case hub");
                     r = ParseInput_Hub(args.Socket.Information.RemoteAddress, DataReceived);
-                    Debug.WriteLine("parsed input");
                     break;
                 case "device":
                     break;
@@ -189,7 +187,7 @@ namespace HubLibrary
 
                 // Dispose the data
                 writer.Dispose();
-                Debug.WriteLine("Connection has been made and your message " + DataToSend + " has been sent." + Environment.NewLine);
+                //Debug.WriteLine("Connection has been made and your message " + DataToSend + " has been sent." + Environment.NewLine);
 
                 // Dispose the connection.
                 connectionSocket.Dispose();
@@ -210,7 +208,6 @@ namespace HubLibrary
 
             Response ret = new Response(host, "");
 
-            Debug.WriteLine("[ParseInput_Hub] split contents: " + s);
 
             switch (s[0])
             {
@@ -234,10 +231,25 @@ namespace HubLibrary
                     break;
                 case "3":
                     //add device
-                    //3__deviceIP__
+                    //3__deviceHost__admin_pass
+                    //if (DataAccess.Hub.AuthAdmin(s[2], s[3]))
+                    //{
+                    //    ret.message = "3_authfail";
+                    //    break;
+                    //}
 
-                    //DataAccess.Hub.AddDevice();
+                    //if (DataAccess.Hub.CheckAdmin())
+                    //{
+                    //    ret.message = "3__authfail";
+                    //    break;
+                    //}
 
+
+                    //DataAccess.Hub.AddDevice("ip", s[2]);
+                    Debug.WriteLine("Adding device ...");
+
+                    ret.message = "5__addhub";
+                    ret.dest = new HostName("healthSensor");
 
                     break;
                 case "4":
@@ -246,18 +258,32 @@ namespace HubLibrary
                 case "5":
                     //add hub
                     //5__username__password
-                    Debug.WriteLine("case 5 started");
-                    DataAccess.Hub.AddAdmin(s[1], s[2]);
+                    Debug.WriteLine("Setting up Hub");
+                    //DataAccess.Hub.AddAdmin(s[1], s[2]);
                     //Debug.WriteLine("case 5");
-                    ret.message = "6__success";
+                    ret.message = "5__success__"+HubData.HubSR+"__"+HubData.HubHost+"__"+HubData.HubIP;
                     break;
 
                 case "6":
-                    Debug.WriteLine("case 6 started");
                     DataAccess.Hub.resetDB();
                     Debug.WriteLine("Db Reset");
 
                     ret.message = "6__success";
+                    break;
+
+                case "7":
+                    Debug.WriteLine("Relaying sensor data to PC");
+
+                    ret.message = "7__sensordata";
+                    ret.dest = new HostName("MSI");
+
+
+                    break;
+                case "8":
+                    Debug.WriteLine("Device registered");
+
+                    ret.message = "8";
+                    ret.dest = new HostName("MSI");
                     break;
 
                 default:
